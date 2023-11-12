@@ -55,7 +55,7 @@ def load_data(directory):
 def main():
     if len(sys.argv) > 2:
         sys.exit("Usage: python degrees.py [directory]")
-    directory = sys.argv[1] if len(sys.argv) == 2 else "small"
+    directory = sys.argv[1] if len(sys.argv) == 2 else "large"
 
     # Load data from files into memory
     print("Loading data...")
@@ -82,6 +82,8 @@ def main():
             person2 = people[path[i + 1][1]]["name"]
             movie = movies[path[i + 1][0]]["title"]
             print(f"{i + 1}: {person1} and {person2} starred in {movie}")
+            
+            
 
 
 def shortest_path(source, target):
@@ -98,7 +100,6 @@ def shortest_path(source, target):
     bfs.add(starting_node)
     
     finish_state=target
-    print(bfs.frontier[0].state)
     
     #for ids in neighbors_for_person(starting_node.state):
         #print(f"{ids[1]}, {starting_node}, {ids[0]}")
@@ -112,22 +113,31 @@ def shortest_path(source, target):
         #print(bfs.frontier)
         #print(neighbors_for_person(bfs.frontier[0].state))
         for ids in neighbors_for_person(bfs.frontier[0].state):
-            node = Node(ids[1], bfs.frontier[0].state, ids[0])
-            print(f"{ids[1]}, {bfs.frontier[0].state}, {ids[0]}")
+            node = Node(ids[1], bfs.frontier[0], ids[0])
+            #print(f"{ids[1]}, {bfs.frontier[0].state}, {ids[0]}")
             bfs.add(node)
-            if(node[0]==source):
+            #print(type(node[0]))
+            if(node.state==target):
                 final_node = node
+        if len(bfs.frontier) == 0:
+            break
         #print(bfs.frontier)
-        bfs.remove()
         
     connection = []
+    #connection.append
+    
+
     
     actual_node = final_node
     
     while actual_node != starting_node:
-        connection.append[(actual_node[2], actual_node[0])]
-        actual_node = ac
-    print(bfs.frontier[-1])
+        connection.append((actual_node.action, actual_node.state))
+        actual_node = actual_node.parent
+        
+    connection.reverse()
+    
+    return connection
+    #print(bfs.frontier[-1])
     
     #print(bfs.frontier)
 
