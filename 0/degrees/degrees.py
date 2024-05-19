@@ -107,7 +107,9 @@ def shortest_path(source, target):
         #bfs.add(node)
         #print(node)
         
+    done_list=[]
     
+    done = False
         
     while bfs.contains_state(finish_state) != True:
         #print(bfs.frontier)
@@ -115,10 +117,15 @@ def shortest_path(source, target):
         for ids in neighbors_for_person(bfs.frontier[0].state):
             node = Node(ids[1], bfs.frontier[0], ids[0])
             #print(f"{ids[1]}, {bfs.frontier[0].state}, {ids[0]}")
-            bfs.add(node)
+            if node.state not in done_list:  
+                bfs.add(node)
             #print(type(node[0]))
             if(node.state==target):
                 final_node = node
+                done = True
+                actual_node = final_node
+        
+        done_list.append(bfs.remove().state)
         if len(bfs.frontier) == 0:
             break
         #print(bfs.frontier)
@@ -128,11 +135,13 @@ def shortest_path(source, target):
     
 
     
-    actual_node = final_node
     
-    while actual_node != starting_node:
-        connection.append((actual_node.action, actual_node.state))
-        actual_node = actual_node.parent
+    
+    
+    if done == True:
+        while actual_node != starting_node:
+            connection.append((actual_node.action, actual_node.state))
+            actual_node = actual_node.parent
         
     connection.reverse()
     
